@@ -104,3 +104,6 @@ def run():
 def keep():
    thr = threading.Thread(target=run)
    thr.start()
+
+if __name__ == '__main__':
+    keep()
