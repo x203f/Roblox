@@ -26,6 +26,18 @@ def get_current_maker_Session():
             return f.read().decode()
     except:
         return -2
+
+
+def make_current_maker_Session_repl(sessionid):
+    with open("repl_session.data",'wb') as f:
+        f.write(sessionid.encode())
+        f.close()
+def get_current_maker_Session_repl():
+    try:
+        with open("repl_session.data",'rb') as f:
+            return f.read().decode()
+    except:
+        return -2
 class sessionDatas:
     def __init__(self,cookie):
         if cookie == None:
@@ -65,6 +77,16 @@ def home():
 def start_session():
     id = create_session()
     return jsonify({"newId": id}), 200
+
+@app.route('/roblox/replit/make_session', methods=['POST'])
+def start_session_repl():
+    id = "".join(random.choices(string.digits + string.ascii_lowercase,k=15))
+    make_current_maker_Session_repl(id)
+    return jsonify({"newId": id}), 200
+@app.route('/roblox/replit/get_session', methods=['GET'])
+def get_session_repl():
+    id = get_current_maker_Session_repl()
+    return jsonify({"sessionId": id}), 200
 @app.route('/roblox/current_session', methods=['GET'])
 def get_session():
     if get_current_maker_Session() != -2:
